@@ -15,9 +15,16 @@ const resetDataTestJson = () => {
 }
 
 test('get root page', async () => {
+	const res = await request(app).get('/')
+	expect(res.status).toBe(200)
+	expect(res.text).toEqual('Homepage loaded')
+})
+
+
+test('get root page', async () => {
 	resetDataTestJson()
 
-	const res = await request(app).get('/')
+	const res = await request(app).get('/data')
 	const response = exampleData
 	expect(res.status).toBe(200)
 	expect(res.body).toEqual(response)

@@ -12,6 +12,10 @@ app.use(express.json())
 const dataFilePath = process.env.NODE_ENV === 'test' ? './test/data.test.json' : 'data.json'
 
 app.get('/', (req, res) => {
+	res.send('Homepage loaded')
+})
+
+app.get('/data', (req, res) => {
   fs.readFile(dataFilePath, (err, data) => {
     if (err) throw err
     const fileData = JSON.parse(data)
