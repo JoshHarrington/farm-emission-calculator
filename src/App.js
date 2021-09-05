@@ -10,6 +10,7 @@ function App() {
 
   const [data, setData] = useState([])
   const [formState, updateFormState] = useState({})
+  const [dataLoaded, setDataLoaded] = useState(false)
 
   const maxNumberOfInputFarms = 10
   const isFullDataEntryRequired = data.length <= maxNumberOfInputFarms
@@ -20,6 +21,7 @@ function App() {
     }).then(res => res.json())
     .then(data => {
       setData(data)
+      setDataLoaded(true)
     })
 
     updateFormState({})
@@ -89,6 +91,12 @@ function App() {
           ))}
         </tbody>
       </table>
+
+      {dataLoaded && data.length === 0 &&
+        <p className="mt-2 font-medium">No farms added yet</p>
+      }
+
+      {!dataLoaded && <p className="mt-2 font-medium">Loading data...</p>}
 
       <hr className="mt-6" />
 
