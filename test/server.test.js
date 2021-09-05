@@ -32,6 +32,15 @@ const newFullFarmData = {
 	"grassPurchased": 421
 }
 
+const newPartialFarmData = {
+	"name": "Example farm partial",
+	"acres": 87,
+	"cows": 38,
+	"tractors": 3,
+	"milkMachines": 47,
+	"milkProduced": 38
+}
+
 const defaultDataFileContents = JSON.stringify(exampleFullData)
 
 const resetDataTestJson = () => {
@@ -74,4 +83,19 @@ test('post full farm data to create farm', async () => {
 	expect(res.body[1]["emissionsElectricity"]).toEqual(76.46992)
 	expect(res.body[1]["emissionsFood"]).toEqual(591.3605)
 	expect(res.body[1]["emissionsPerLitreMilk"]).toEqual(10.76640361445783)
+})
+
+test('post partial farm data to create farm', async () => {
+	const res = await request(app).post('/create-from-partial-data').send(newPartialFarmData)
+	expect(res.status).toBe(200)
+	expect(res.body.length).toEqual(2)
+	expect(res.body[1]["name"]).toEqual("Example farm partial")
+	expect(res.body[1]["dieselPurchased"]).toEqual(40)
+	expect(res.body[1]["soyPurchased"]).toEqual(152)
+	expect(res.body[1]["grassPurchased"]).toEqual(142.5)
+	expect(res.body[1]["electricityPurchased"]).toEqual(1175)
+	expect(res.body[1]["emissionsFossilFuels"]).toEqual(107.51480000000001)
+	expect(res.body[1]["emissionsElectricity"]).toEqual(273.9395)
+	expect(res.body[1]["emissionsFood"]).toEqual(391.36105)
+	expect(res.body[1]["emissionsPerLitreMilk"]).toEqual(20.337246052631578)
 })

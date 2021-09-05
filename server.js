@@ -1,7 +1,7 @@
 const express = require('express')
 const cors = require('cors')
 const fs = require('fs')
-const { addEmissionData } = require('./utils.js')
+const { addEmissionData, estimatePurchasesAndEmissionData } = require('./utils.js')
 
 const app = express()
 const port = process.env.NODE_ENV === 'test' ? 9001 : 9000;
@@ -30,6 +30,26 @@ app.post('/create-from-full-data', (req, res) => {
 		if (err) throw err
 		const currentFileData = JSON.parse(data)
 		const newFarmData = addEmissionData(req.body)
+		const newFileData = [...currentFileData, newFarmData]
+		const stringifiedNewFileData = JSON.stringify(newFileData)
+
+		fs.writeFile(
+			dataFilePath,
+			stringifiedNewFileData,
+			(err) => {
+				if (err) throw err
+				res.send(newFileData)
+			}
+		)
+	})
+})
+
+app.post('/create-from-partial-data', (req, res) => {
+
+	fs.readFile(dataFilePath, (err, data) => {
+		if (err) throw err
+		const currentFileData = JSON.parse(data)
+		const newFarmData = estimatePurchasesAndEmissionData({existingData: currentFileData, partialFarmData: req.body})
 		const newFileData = [...currentFileData, newFarmData]
 		const stringifiedNewFileData = JSON.stringify(newFileData)
 
