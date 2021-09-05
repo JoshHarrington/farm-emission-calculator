@@ -58,6 +58,10 @@ function App() {
             <th className={classNames(tableCellBorderClasses, tableHeaderCellClasses)}>Diesel Tractors</th>
             <th className={classNames(tableCellBorderClasses, tableHeaderCellClasses)}>Milk machines</th>
             <th className={classNames(tableCellBorderClasses, tableHeaderCellClasses)}>Litres milk produced</th>
+            <th className={classNames(tableCellBorderClasses, tableHeaderCellClasses, "text-green-600")}>Scope 1<br/><hr/>Fossil fuel emissions (kgCO2e)</th>
+            <th className={classNames(tableCellBorderClasses, tableHeaderCellClasses, "text-green-600")}>Scope 2<br/><hr/>Electricity emissions (kgCO2e)</th>
+            <th className={classNames(tableCellBorderClasses, tableHeaderCellClasses, "text-green-600")}>Scope 3<br/><hr/>Food purchase emissions (kgCO2e)</th>
+            <th className={classNames(tableCellBorderClasses, tableHeaderCellClasses, "text-green-800")}>Emissions per litre of milk (kgCO2e / l)</th>
           </tr>
         </thead>
         <tbody>
@@ -69,6 +73,10 @@ function App() {
               <td className={classNames(tableCellBorderClasses, tableBodyCellClasses)}>{f["tractors"]}</td>
               <td className={classNames(tableCellBorderClasses, tableBodyCellClasses)}>{f["milkMachines"]}</td>
               <td className={classNames(tableCellBorderClasses, tableBodyCellClasses)}>{f["milkProduced"]}</td>
+              <td className={classNames(tableCellBorderClasses, tableBodyCellClasses)}>{f.emissionsFossilFuels.toFixed(2)}</td>
+              <td className={classNames(tableCellBorderClasses, tableBodyCellClasses)}>{f.emissionsElectricity.toFixed(2)}</td>
+              <td className={classNames(tableCellBorderClasses, tableBodyCellClasses)}>{f.emissionsFood.toFixed(2)}</td>
+              <td className={classNames(tableCellBorderClasses, tableBodyCellClasses)}>{f.emissionsPerLitreMilk.toFixed(2)}</td>
             </tr>
           ))}
         </tbody>
