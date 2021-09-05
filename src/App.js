@@ -1,5 +1,21 @@
+import { useEffect, useState } from 'react'
+
+const apiHost = 'http://localhost:9000/'
+const apiDataUrl = apiHost + 'data'
 
 function App() {
+
+  const [data, setData] = useState([])
+
+  useEffect(() => {
+    fetch(apiDataUrl, {
+      method: 'GET'
+    }).then(res => res.json())
+    .then(data => {
+      setData(data)
+    })
+  }, [])
+
   return (
     <div className="flex flex-col">
       <table className="table-auto">
@@ -14,8 +30,16 @@ function App() {
           </tr>
         </thead>
         <tbody>
-          <tr>
-          </tr>
+          {data.map((f, i) => (
+            <tr key={i}>
+              <td>{f["name"]}</td>
+              <td>{f["acres"]}</td>
+              <td>{f["cows"]}</td>
+              <td>{f["tractors"]}</td>
+              <td>{f["milkMachines"]}</td>
+              <td>{f["milkProduced"]}</td>
+            </tr>
+          ))}
         </tbody>
       </table>
     </div>
