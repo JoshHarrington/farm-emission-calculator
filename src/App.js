@@ -1,4 +1,5 @@
 import { useEffect, useState } from 'react'
+import classNames from 'classnames'
 
 const apiHost = 'http://localhost:9000/'
 const apiAllDataUrl = apiHost + 'all-data'
@@ -42,34 +43,40 @@ function App() {
     )
   }
 
+  const tableCellBorderClasses = "border-green-500 px-4 py-2"
+  const tableHeaderCellClasses = "text-bold text-center border-0 border-b"
+  const tableBodyCellClasses = "border text-left"
+
   return (
-    <div className="flex flex-col">
+    <div className="flex flex-col h-full p-6">
       <table className="table-auto">
         <thead>
           <tr>
-            <th>Farm name</th>
-            <th>Acres</th>
-            <th>Cows</th>
-            <th>Diesel Tractors</th>
-            <th>Milk machines</th>
-            <th>Litres milk produced</th>
+            <th className={classNames(tableCellBorderClasses, tableHeaderCellClasses)}>Farm name</th>
+            <th className={classNames(tableCellBorderClasses, tableHeaderCellClasses)}>Acres</th>
+            <th className={classNames(tableCellBorderClasses, tableHeaderCellClasses)}>Cows</th>
+            <th className={classNames(tableCellBorderClasses, tableHeaderCellClasses)}>Diesel Tractors</th>
+            <th className={classNames(tableCellBorderClasses, tableHeaderCellClasses)}>Milk machines</th>
+            <th className={classNames(tableCellBorderClasses, tableHeaderCellClasses)}>Litres milk produced</th>
           </tr>
         </thead>
         <tbody>
           {data.map((f, i) => (
             <tr key={i}>
-              <td>{f["name"]}</td>
-              <td>{f["acres"]}</td>
-              <td>{f["cows"]}</td>
-              <td>{f["tractors"]}</td>
-              <td>{f["milkMachines"]}</td>
-              <td>{f["milkProduced"]}</td>
+              <td className={classNames(tableCellBorderClasses, tableBodyCellClasses)}>{f["name"]}</td>
+              <td className={classNames(tableCellBorderClasses, tableBodyCellClasses)}>{f["acres"]}</td>
+              <td className={classNames(tableCellBorderClasses, tableBodyCellClasses)}>{f["cows"]}</td>
+              <td className={classNames(tableCellBorderClasses, tableBodyCellClasses)}>{f["tractors"]}</td>
+              <td className={classNames(tableCellBorderClasses, tableBodyCellClasses)}>{f["milkMachines"]}</td>
+              <td className={classNames(tableCellBorderClasses, tableBodyCellClasses)}>{f["milkProduced"]}</td>
             </tr>
           ))}
         </tbody>
       </table>
 
-      <h2 className="text-2xl font-medium mt-3 mb-2">Add Farm details</h2>
+      <hr className="mt-6" />
+
+      <h2 className="text-2xl font-medium mt-3 mb-2">Add full farm details</h2>
       <form
         className="mb-8"
         onSubmit={(e) => {
