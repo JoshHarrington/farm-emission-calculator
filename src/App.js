@@ -1,14 +1,14 @@
 import { useEffect, useState } from 'react'
 
 const apiHost = 'http://localhost:9000/'
-const apiDataUrl = apiHost + 'data'
+const apiAllDataUrl = apiHost + 'all-data'
 
 function App() {
 
   const [data, setData] = useState([])
 
   useEffect(() => {
-    fetch(apiDataUrl, {
+    fetch(apiAllDataUrl, {
       method: 'GET'
     }).then(res => res.json())
     .then(data => {

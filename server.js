@@ -6,7 +6,7 @@ const app = express()
 const port = process.env.NODE_ENV === 'test' ? 9001 : 9000;
 
 app.use(cors())
-app.use(express.urlencoded({ extended: false }))
+app.use(express.urlencoded({ extended: true }))
 app.use(express.json())
 
 const dataFilePath = process.env.NODE_ENV === 'test' ? './test/data.test.json' : 'data.json'
@@ -15,11 +15,31 @@ app.get('/', (req, res) => {
 	res.send('Homepage loaded')
 })
 
-app.get('/data', (req, res) => {
+app.get('/all-data', (req, res) => {
   fs.readFile(dataFilePath, (err, data) => {
     if (err) throw err
     const fileData = JSON.parse(data)
 		res.send(fileData)
+	})
+})
+
+app.post('/create-from-full-data', (req, res) => {
+
+	fs.readFile(dataFilePath, (err, data) => {
+		if (err) throw err
+		const currentFileData = JSON.parse(data)
+		const newFarmData = req.body
+		const newFileData = [...currentFileData, newFarmData]
+		const stringifiedNewFileData = JSON.stringify(newFileData)
+
+		fs.writeFile(
+			dataFilePath,
+			stringifiedNewFileData,
+			(err) => {
+				if (err) throw err
+				res.send(newFileData)
+			}
+		)
 	})
 })
 
