@@ -17,6 +17,7 @@
   "scripts": {
     "start": "yarn client-start & node server.js",
     "client-start": "react-scripts start",
+    "server-tests": "yarn run jest ./test/server.test.js --forceExit",
     "build": "react-scripts build",
     "test": "react-scripts test",
     "eject": "react-scripts eject"
