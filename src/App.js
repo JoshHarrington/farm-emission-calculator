@@ -4,11 +4,15 @@ import classNames from 'classnames'
 const apiHost = 'http://localhost:9000/'
 const apiAllDataUrl = apiHost + 'all-data'
 const apiFullDataPost = apiHost + 'create-from-full-data'
+const apiPartialDataPost = apiHost + 'create-from-partial-data'
 
 function App() {
 
   const [data, setData] = useState([])
   const [formState, updateFormState] = useState({})
+
+  const maxNumberOfInputFarms = 10
+  const isFullDataEntryRequired = data.length <= maxNumberOfInputFarms
 
   useEffect(() => {
     fetch(apiAllDataUrl, {
@@ -17,6 +21,10 @@ function App() {
     .then(data => {
       setData(data)
     })
+
+    updateFormState({})
+    // clear form data on every rerender
+    // avoiding issue where rerenders locks input fields with data in them
   }, [])
 
   const FormElement = ({name, type, children}) => {
@@ -84,12 +92,12 @@ function App() {
 
       <hr className="mt-6" />
 
-      <h2 className="text-2xl font-medium mt-3 mb-2">Add full farm details</h2>
+      <h2 className="text-2xl font-medium mt-3 mb-2">Add {isFullDataEntryRequired ? 'full' : 'partial'} farm details</h2>
       <form
         className="mb-8"
         onSubmit={(e) => {
           e.preventDefault()
-          fetch(apiFullDataPost, {
+          fetch(isFullDataEntryRequired ? apiFullDataPost : apiPartialDataPost, {
             method: 'POST',
             headers: {
               'Content-Type': 'application/json'
@@ -109,23 +117,28 @@ function App() {
 
         <FormElement name="cows" type="number">Number of Cows</FormElement>
 
-        <FormElement name="soyPurchased" type="number">Soy Purchased (kg)</FormElement>
+        {isFullDataEntryRequired &&
+          <FormElement name="soyPurchased" type="number">Soy Purchased (kg)</FormElement>
+        }
 
-        <FormElement name="grassPurchased" type="number">Grass Purchased (kg)</FormElement>
+        {isFullDataEntryRequired &&
+          <FormElement name="grassPurchased" type="number">Grass Purchased (kg)</FormElement>
+        }
 
         <FormElement name="tractors" type="number">Number of Tractors</FormElement>
 
-        <FormElement name="dieselUsage" type="number">Diesel Usage (l/100 mile)</FormElement>
-
-        <FormElement name="dieselPurchased" type="number">Diesel Purchased (l)</FormElement>
+        {isFullDataEntryRequired &&
+          <FormElement name="dieselPurchased" type="number">Diesel Purchased (l)</FormElement>
+        }
 
         <FormElement name="milkMachines" type="number">Number of Milk Machines</FormElement>
 
-        <FormElement name="milkMachineUsage" type="number">Usage (kWh) per Milk Machine</FormElement>
-
-        <FormElement name="electricityPurchased" type="number">Electricity Purchased (kWh)</FormElement>
+        {isFullDataEntryRequired &&
+          <FormElement name="electricityPurchased" type="number">Electricity Purchased (kWh)</FormElement>
+        }
 
         <FormElement name="milkProduced" type="number">Litres of Milk produced</FormElement>
+
 
         <div className="w-full flex justify-center mt-5">
           <button className="bg-green-600 text-white py-1 px-2 rounded-sm text-xl" type="submit">Submit new farm details</button>
